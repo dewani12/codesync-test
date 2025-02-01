@@ -53,7 +53,7 @@ function EditorPage() {
           <Editor editorRef={editorRef} socketRef={socketRef} roomId={roomId} />
         </div>
       </div>
-      <div className="w-1/3 bg-[#212429]">
+      <div className="w-1/3 bg-[#212429] py-4">
         <Terminal editorRef={editorRef} />
       </div>
     </div>
