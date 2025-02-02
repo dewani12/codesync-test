@@ -32,7 +32,7 @@ function Editor({ editorRef, socketRef, roomId }) {
         }
       });
     }
-  }, [roomId, socketRef]);
+  });
 
   useEffect(() => {
     if (!socketRef.current) {

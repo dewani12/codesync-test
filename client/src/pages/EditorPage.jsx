@@ -9,7 +9,7 @@ function EditorPage() {
   const socketRef = useRef(null);
   const editorRef = useRef(null);
   const { roomId } = useParams();
-  const [clients, setClients] = useState([]);
+  const [, setClients] = useState([]);
   const [isSocketInitialized, setIsSocketInitialized] = useState(false);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ function EditorPage() {
       socketRef.current = initSocket();
       socketRef.current.emit("join", roomId);
 
-      socketRef.current.on("join", (clients, socketId) => {
+      socketRef.current.on("join", (clients) => {
         setClients(clients);
       });
 
@@ -40,21 +40,21 @@ function EditorPage() {
   }, [roomId]);
 
   if (!isSocketInitialized) {
-    return <div>Loading...</div>;
+    return <div>Loading......</div>;
   }
 
   return (
     <div>
       <div className="flex">
         <div className="w-1/3 bg-[#212429] h-screen">
-          <FileStructureView />
+          <FileStructureView socketRef={socketRef} roomId={roomId} />
         </div>
         <div className="w-2/3">
           <Editor editorRef={editorRef} socketRef={socketRef} roomId={roomId} />
         </div>
       </div>
       <div className="w-1/3 bg-[#212429] py-4">
-        <Terminal editorRef={editorRef} />
+        <Terminal editorRef={editorRef} socketRef={socketRef} roomId={roomId} />
       </div>
     </div>
   );

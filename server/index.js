@@ -35,6 +35,22 @@ io.on("connection", (socket) => {
     console.log("code-change", code);
     socket.to(roomId).emit("recieve-changes", code);
   });
+  socket.on("structure-change", ({ roomId, structure }) => {
+    console.log("structure-change", structure);
+    socket.to(roomId).emit("recieve-structure", structure);
+  });
+  socket.on("languageChange", ({ roomId, lang, langVersion }) => {
+    console.log("language change", lang);
+    socket.to(roomId).emit("recieve-lang", lang, langVersion);
+  });
+  socket.on("input-change", ({ roomId, input }) => {
+    console.log("input change", input);
+    socket.to(roomId).emit("recieve-input", input);
+  });
+  socket.on("output-change", ({ roomId, output }) => {
+    console.log("output change", output);
+    socket.to(roomId).emit("recieve-output", output);
+  });
   socket.on("disconnect", () => {
     socket.to(socket.roomId).emit("userDisconnected", socket.id);
     socket.leave(socket.roomId);
