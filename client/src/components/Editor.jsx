@@ -8,7 +8,7 @@ import "codemirror/addon/edit/closebrackets";
 import "codemirror/addon/edit/closetag";
 
 function Editor({ editorRef, roomId }) {
-  const {socketRef} = useSocket();
+  const { socketRef } = useSocket();
   if (!socketRef.current) {
     console.log("Socket not initialized check 1");
   }
@@ -30,11 +30,16 @@ function Editor({ editorRef, roomId }) {
         const { origin } = changes;
         const code = instance.getValue();
         if (origin !== "setValue") {
-          socketRef.current.emit("code-change", { roomId, code });
+          console.log(socketRef.current.id, " is currently typing");
+          socketRef.current.emit("code-change", {
+            roomId,
+            code,
+            socketId: socketRef.current.id,
+          });
         }
       });
     }
-  });
+  }, []);
 
   useEffect(() => {
     if (!socketRef.current) {
