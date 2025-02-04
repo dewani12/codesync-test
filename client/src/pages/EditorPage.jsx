@@ -1,16 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Editor from "../components/Editor";
-import initSocket from "../socket";
+import initSocket from "../utils/socket";
 import Terminal from "../components/Terminal";
 import FileStructureView from "../components/FileStructureView";
+import { useSocket } from "../contexts/SocketContext";
 
 function EditorPage() {
-  const socketRef = useRef(null);
   const editorRef = useRef(null);
   const { roomId } = useParams();
-  const [, setClients] = useState([]);
-  const [isSocketInitialized, setIsSocketInitialized] = useState(false);
+  const { socketRef, isSocketInitialized, setIsSocketInitialized, clients, setClients } = useSocket();
 
   useEffect(() => {
     const init = async () => {
@@ -38,6 +37,7 @@ function EditorPage() {
       }
     };
   }, [roomId]);
+ 
 
   if (!isSocketInitialized) {
     return <div>Loading......</div>;
@@ -47,10 +47,10 @@ function EditorPage() {
     <div>
       <div className="flex">
         <div className="w-1/3 bg-[#212429] h-screen">
-          <FileStructureView socketRef={socketRef} roomId={roomId} />
+          <FileStructureView />
         </div>
         <div className="w-2/3">
-          <Editor editorRef={editorRef} socketRef={socketRef} roomId={roomId} />
+          <Editor editorRef={editorRef} roomId={roomId} />
         </div>
       </div>
       <div className="w-1/3 bg-[#212429] py-4">
