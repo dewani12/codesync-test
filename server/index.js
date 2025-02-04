@@ -31,8 +31,8 @@ io.on("connection", (socket) => {
     socket.emit("join", clients);
     console.log(clients);
   });
-  socket.on("code-change", ({ roomId, code }) => {
-    console.log("code-change", code);
+  socket.on("code-change", ({ roomId, code, socketId }) => {
+    console.log("code-change", code, "by socketId", socketId?socketId:"k");
     socket.to(roomId).emit("recieve-changes", code);
   });
   socket.on("structure-change", ({ roomId, structure }) => {
