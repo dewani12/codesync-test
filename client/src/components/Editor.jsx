@@ -45,14 +45,23 @@ function Editor({ editorRef, roomId }) {
     if (!socketRef.current) {
       return;
     }
-    const handleReceiveChanges = (code) => {
-      console.log("Recieved codes: ", code);
+    const handleReceiveChanges = ({ code, socketId }) => {
+      console.log("Received code:", code);
+      console.log(`${socketId} is currently typing`);
       if (editorRef.current) {
-        if (editorRef.current.getValue() !== code) {
-          editorRef.current.setValue(code);
+        const editor = editorRef.current;
+        const currentCode = editor.getValue();
+        const cursor = editor.getCursor();
+        if (currentCode !== code) {
+          const scrollInfo = editor.getScrollInfo();
+          const lastPos = { line: editor.lineCount(), ch: 0 };
+          editor.replaceRange(code, { line: 0, ch: 0 }, lastPos);
+          editor.setCursor(cursor);
+          editor.scrollTo(scrollInfo.left, scrollInfo.top);
         }
       }
     };
+
     socketRef.current.on("recieve-changes", handleReceiveChanges);
     return () => {
       if (socketRef.current) {
