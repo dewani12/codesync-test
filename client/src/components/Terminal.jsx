@@ -31,12 +31,6 @@ function Terminal({ editorRef, socketRef, roomId }) {
     curRef.on("recieve-input", handleInputTerminalChanges);
     curRef.on("recieve-output", handleOutputTerminalChanges);
     curRef.on("recieve-lang", handleLanguageChange);
-    // return () => {
-    //   if (socketRef.current) {
-    //     curRef.off("recieve-input", handleInputTerminalChanges);
-    //     curRef.off("recieve-output", handleOutputTerminalChanges);
-    //   }
-    // };
   }, [socketRef]);
 
   const handleInputChange = (e) => {
@@ -98,7 +92,9 @@ function Terminal({ editorRef, socketRef, roomId }) {
           </button>
           {menuOpen && (
             <div className="absolute mt-2 w-48 bg-white border rounded shadow-lg max-h-48 overflow-y-auto z-99">
-              {languageOptions.map((lang, index) => (
+              {languageOptions
+              .sort((a, b) => a.language.localeCompare(b.language))
+              .map((lang, index) => (
                 <div
                   key={index}
                   className="p-2 hover:bg-gray-200 cursor-pointer flex justify-between items-center"

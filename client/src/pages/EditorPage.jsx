@@ -32,7 +32,7 @@ function EditorPage() {
     init();
 
     return () => {
-      if (socketRef.current) {
+      if (!socketRef.current) {
         socketRef.current.disconnect();
       }
     };
